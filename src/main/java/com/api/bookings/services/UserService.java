@@ -76,4 +76,15 @@ public class UserService {
             throw new DeleteException("Error deleting user", e);
         }
     }
+
+    public boolean authenticate(String email, String password) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Aquí debes implementar la verificación de la contraseña.
+            // Esto es un ejemplo simple y NO seguro para fines ilustrativos. Debes usar hashing de contraseñas.
+            return user.getPassword().equals(password);
+        }
+        return false;
+    }
 }

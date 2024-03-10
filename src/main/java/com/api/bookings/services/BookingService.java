@@ -42,8 +42,8 @@ public class BookingService {
         Optional<Booking> optionalBooking = bookingRepository.findById(id);
         if (optionalBooking.isPresent()) {
             Booking newBooking = optionalBooking.get();
-            newBooking.setTo(booking.getTo());
-            newBooking.setFrom(booking.getFrom());
+            newBooking.setStart(booking.getStart());
+            newBooking.setEnd(booking.getEnd());
             newBooking.setStatus(booking.getStatus());
             newBooking.setModifiedAt(new Date());
 

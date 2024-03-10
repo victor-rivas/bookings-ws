@@ -44,4 +44,5 @@ public class UserController {
     public Boolean deleteUserById(@PathVariable("id") Integer id) {
         return this.userService.deleteUserById(id);
     }
+
 }
