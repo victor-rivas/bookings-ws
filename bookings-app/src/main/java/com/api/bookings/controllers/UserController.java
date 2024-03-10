@@ -2,9 +2,11 @@ package com.api.bookings.controllers;
 
 import entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.api.bookings.services.UserService;
+import request.LoginRequest;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -45,4 +47,12 @@ public class UserController {
         return this.userService.deleteUserById(id);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
+        if (userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword())) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid email or password");
+        }
+    }
 }

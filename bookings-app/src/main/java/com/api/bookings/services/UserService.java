@@ -8,7 +8,9 @@ import entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -19,10 +21,13 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final IUserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UserService(IUserRepository userRepository) {
+    public UserService(IUserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public ArrayList<User> getUsers() {
@@ -30,6 +35,8 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
         return userRepository.save(user);
     }
 
@@ -81,9 +88,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            // Aquí debes implementar la verificación de la contraseña.
-            // Esto es un ejemplo simple y NO seguro para fines ilustrativos. Debes usar hashing de contraseñas.
-            return user.getPassword().equals(password);
+            return passwordEncoder.matches(password, user.getPassword());
         }
         return false;
     }
