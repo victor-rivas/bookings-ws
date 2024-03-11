@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>com.victor-rivas</groupId>
 			<artifactId>dtos</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>0.1.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

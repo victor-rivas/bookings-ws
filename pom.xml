@@ -10,7 +10,7 @@
 	<description>Api rest with Java</description>
 
 	<properties>
-		<project.version>0.0.2-SNAPSHOT</project.version>
+		<project.version>0.1.0</project.version>
 	</properties>
 
 	<modules>
