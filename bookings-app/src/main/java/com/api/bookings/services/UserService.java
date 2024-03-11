@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public ArrayList<User> getUsers() {
-        return (ArrayList<User>) userRepository.findAll();
+        return userRepository.findAllWithRoleAndLogo();
     }
 
     public User saveUser(User user) {
@@ -41,7 +41,7 @@ public class UserService {
     }
 
     public Optional<User> getUserById(Integer id) {
-        return userRepository.findById(id);
+        return userRepository.findUserByIdWithRoleAndLogo(id);
     }
 
     public User updateUserById(User user, Integer id) throws UpdateException {

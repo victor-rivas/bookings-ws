@@ -27,7 +27,7 @@ public class BookingService {
     }
 
     public ArrayList<Booking> getBookings() {
-        return (ArrayList<Booking>) bookingRepository.findAll();
+        return bookingRepository.findAllWithUserAndStatus();
     }
 
     public Booking saveBooking(Booking booking) {
@@ -35,7 +35,7 @@ public class BookingService {
     }
 
     public Optional<Booking> getBookingById(Integer id) {
-        return bookingRepository.findById(id);
+        return bookingRepository.findBookingByIdWithUserAndStatus(id);
     }
 
     public Booking updateBookingById(Booking booking, Integer id) throws UpdateException {
