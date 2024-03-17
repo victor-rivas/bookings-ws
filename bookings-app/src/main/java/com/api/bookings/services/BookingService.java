@@ -5,6 +5,7 @@ import com.api.bookings.exceptions.NotFoundException;
 import com.api.bookings.exceptions.UpdateException;
 import com.api.bookings.repositories.IBookingRepository;
 import entities.Booking;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,29 @@ public class BookingService {
     }
 
     public ArrayList<Booking> getBookings() {
-        return bookingRepository.findAllWithUserAndStatus();
+        ArrayList<Booking> bookings = bookingRepository.findAllWithUserAndStatus();
+        bookings.forEach(booking -> {
+            if (booking.getUser() != null) {
+                Hibernate.initialize(booking.getUser().getRole());
+                Hibernate.initialize(booking.getUser().getLogo());
+            }
+        });
+        return bookings;
+    }
+
+    public Optional<Booking> getBookingById(Integer id) {
+        Optional<Booking> bookingOptional = bookingRepository.findBookingByIdWithUserAndStatus(id);
+        bookingOptional.ifPresent(booking -> {
+            if (booking.getUser() != null) {
+                Hibernate.initialize(booking.getUser().getRole());
+                Hibernate.initialize(booking.getUser().getLogo());
+            }
+        });
+        return bookingOptional;
     }
 
     public Booking saveBooking(Booking booking) {
         return bookingRepository.save(booking);
-    }
-
-    public Optional<Booking> getBookingById(Integer id) {
-        return bookingRepository.findBookingByIdWithUserAndStatus(id);
     }
 
     public Booking updateBookingById(Booking booking, Integer id) throws UpdateException {
